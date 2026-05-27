@@ -1,0 +1,23 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Definición física de la tabla de Logs en PostgreSQL
+model Log {
+  id        String   @id @default(uuid()) // UUID autonumérico
+  accion    String
+  detalle   String
+  ipAddress String
+  userAgent String
+  fecha     DateTime @default(now())
+  usuarioId String? // Opcional
+}
