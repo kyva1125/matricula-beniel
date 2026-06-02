@@ -5,6 +5,7 @@ import DashboardPage from '../features/dashboard/pages/DashboardPage';
 import StudentListPage from '../features/students/pages/StudentListPage';
 import RegisterPaymentPage from '../features/payments/pages/RegisterPaymentPage';
 import PaymentReceiptPage from '../features/payments/pages/PaymentReceiptPage';
+import LandingPage from '../features/marketing/pages/LandingPage';
 import { ProtectedRoute } from './ProtectedRoute';
 import { PublicRoute } from './PublicRoute';
 import { DashboardLayout } from '../layouts/DashboardLayout';
@@ -12,7 +13,10 @@ import { DashboardLayout } from '../layouts/DashboardLayout';
 const AppRoutes: React.FC = () => {
   return (
     <Routes>
-      {/* 🚪 Rutas Públicas (Solo para invitados) */}
+      {/* 🏡 Landing Page Pública */}
+      <Route path="/" element={<LandingPage />} />
+
+      {/* 🚪 Rutas Públicas (Solo para invitados sin sesión) */}
       <Route element={<PublicRoute />}>
         <Route path="/login" element={<LoginPage />} />
       </Route>
