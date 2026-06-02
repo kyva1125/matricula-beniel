@@ -1,6 +1,5 @@
 import app from './app';
 import { env } from './config/environment';
-import { connectMongoDB } from './config/mongo';
 import { connectPostgres } from './config/prisma';
 
 // Manejo global de excepciones no capturadas
@@ -13,7 +12,6 @@ process.on('uncaughtException', (err: Error) => {
 const startServer = async () => {
   try {
 
-    await connectMongoDB();
     await connectPostgres();
 
 

@@ -1,23 +1,71 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
+datasource db {
+  provider = "postgresql"
+}
 
 generator client {
   provider = "prisma-client-js"
 }
 
-datasource db {
-  provider = "postgresql"
-}
-
-// Definición física de la tabla de Logs en PostgreSQL
 model Log {
-  id        String   @id @default(uuid()) // UUID autonumérico
+  id        String   @id @default(uuid())
   accion    String
   detalle   String
   ipAddress String
   userAgent String
   fecha     DateTime @default(now())
-  usuarioId String? // Opcional
+  usuarioId String?
+}
+
+model User {
+  id                 String    @id @default(uuid())
+  nombre             String
+  correo             String    @unique
+  password           String
+  rol                String    // "administrador" | "apoderado" | "estudiante"
+  activo             Boolean   @default(true)
+  fechaCreacion      DateTime  @default(now())
+  fechaActualizacion DateTime  @updatedAt
+  alumnos            Student[] @relation("ApoderadoAlumnos")
+  pagosRegistrados   Payment[] @relation("AdminRegistros")
+}
+
+model Student {
+  id                 String    @id @default(uuid())
+  nombres            String
+  apellidos          String
+  dni                String    @unique
+  grado              String
+  seccion            String
+  apoderadoId        String?
+  apoderado          User?     @relation("ApoderadoAlumnos", fields: [apoderadoId], references: [id], onDelete: SetNull)
+  pensiones          Pension[]
+  fechaCreacion      DateTime  @default(now())
+  fechaActualizacion DateTime  @updatedAt
+}
+
+model Pension {
+  id                 String    @id @default(uuid())
+  alumnoId           String
+  alumno             Student   @relation(fields: [alumnoId], references: [id], onDelete: Cascade)
+  mes                String    // "Matricula" | "Marzo" | "Abril" ...
+  monto              Float
+  fechaVencimiento   DateTime
+  estado             String    // "PAGADO" | "PENDIENTE" | "VENCIDO"
+  pagos              Payment[]
+  fechaCreacion      DateTime  @default(now())
+  fechaActualizacion DateTime  @updatedAt
+}
+
+model Payment {
+  id                 String    @id @default(uuid())
+  pensionId          String
+  pension            Pension   @relation(fields: [pensionId], references: [id], onDelete: Cascade)
+  montoPagado        Float
+  metodoPago         String    // "YAPE" | "PLIN" | "TRANSFERENCIA" | "EFECTIVO"
+  codigoOperacion    String    @unique
+  fechaPago          DateTime  @default(now())
+  comprobanteUrl     String?
+  registradoPorId    String
+  registradoPor      User      @relation("AdminRegistros", fields: [registradoPorId], references: [id])
+  fechaCreacion      DateTime  @default(now())
 }

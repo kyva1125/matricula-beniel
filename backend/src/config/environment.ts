@@ -11,8 +11,6 @@ export const env = {
   isDevelopment: process.env.NODE_ENV === 'development',
   isTest: process.env.NODE_ENV === 'test',
 
-  mongoUrl: process.env.MONGO_URL || '',
-  mongoDbName: process.env.MONGO_DB_NAME || '',
   postgresUrl: process.env.POSTGRES_URL || '',
   databaseUrl: process.env.DATABASE_URL || '',
 };
