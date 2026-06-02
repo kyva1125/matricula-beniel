@@ -2,9 +2,21 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { StatCard } from '../../../components/common/StatCard';
 import { StatusBadge } from '../../../components/common/StatusBadge';
+import { useAuth } from '../../../context/AuthContext';
 
 const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  // Calculate remaining days for the 7-day free trial
+  let trialDaysLeft: number | null = null;
+  if (user?.trialStartedAt) {
+    const start = new Date(user.trialStartedAt);
+    const end = new Date(start.getTime() + 7 * 24 * 60 * 60 * 1000); // 7 days in ms
+    const diffTime = end.getTime() - new Date().getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    trialDaysLeft = diffDays > 0 ? diffDays : 0;
+  }
 
   // Mock data for recent transactions
   const recentPayments = [
@@ -15,12 +27,34 @@ const DashboardPage: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="space-y-6 animate-fade-in">
       {/* Title & Introduction */}
-      <div>
-        <h2 className="text-3xl font-extrabold text-white tracking-tight">Resumen Financiero</h2>
-        <p className="text-slate-400 text-sm mt-1">Monitoreo de recaudaciones, morosidad y transacciones escolares.</p>
+      <div className="flex flex-col sm:flex-row justify-between sm:items-baseline gap-2">
+        <div>
+          <h2 className="text-3xl font-extrabold text-white tracking-tight">Resumen Financiero</h2>
+          <p className="text-slate-400 text-sm mt-1">Monitoreo de recaudaciones, morosidad y transacciones escolares.</p>
+        </div>
+        {user?.institucion && (
+          <span className="text-3xs font-extrabold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full uppercase tracking-wider self-start sm:self-auto">
+            🏫 {user.institucion}
+          </span>
+        )}
       </div>
+
+      {/* 🌟 7-Day Trial Active Banner */}
+      {trialDaysLeft !== null && (
+        <div className="p-4 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-2xl text-xs font-semibold flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-pulse">
+          <div className="flex items-center gap-2.5">
+            <span className="text-base">🌟</span>
+            <span>
+              <strong>Período de Prueba Activo:</strong> Te quedan <strong className="text-white">{trialDaysLeft} días</strong> de prueba gratuita. Actualiza tu plan para no perder acceso a la gestión de cobranza.
+            </span>
+          </div>
+          <button className="py-2 px-3.5 bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white rounded-xl transition-colors text-3xs font-extrabold uppercase tracking-wider shadow-md shadow-indigo-600/15 whitespace-nowrap self-stretch sm:self-auto text-center">
+            Actualizar Plan
+          </button>
+        </div>
+      )}
 
       {/* Metrics Row using extracted StatCard component */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -35,7 +69,7 @@ const DashboardPage: React.FC = () => {
           title="Morosidad Activa"
           value="7.8%"
           trend="-2.4% este mes"
-          isPositive={true} // lower is positive in this context
+          isPositive={true}
           icon="📈"
         />
         <StatCard

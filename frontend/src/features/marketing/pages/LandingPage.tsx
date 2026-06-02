@@ -48,11 +48,11 @@ const LandingPage: React.FC = () => {
         {/* Call to action buttons */}
         <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
           <button
-            onClick={() => navigate('/dashboard')}
+            onClick={() => navigate('/register')}
             className="py-4 px-8 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 active:from-indigo-700 active:to-violet-700 text-white font-bold rounded-2xl transition-all duration-300 text-sm shadow-xl shadow-indigo-600/20 flex items-center justify-center gap-2"
           >
-            <span>Iniciar Demostración</span>
-            <span>🎓</span>
+            <span>Iniciar Prueba Gratis de 7 Días</span>
+            <span>🚀</span>
           </button>
           <a
             href="#features"

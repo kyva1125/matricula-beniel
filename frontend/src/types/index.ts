@@ -6,6 +6,8 @@ export interface User {
   activo: boolean;
   fechaCreacion: string;
   fechaActualizacion: string;
+  trialStartedAt?: string; // Fecha de inicio de prueba gratuita de 7 días
+  institucion?: string;    // Nombre de la institución/colegio
 }
 
 export interface Log {

@@ -6,13 +6,13 @@ interface AuthContextType {
   isAuthenticated: boolean;
   loading: boolean;
   login: (correo: string, pass: string) => Promise<void>;
+  register: (nombre: string, correo: string, pass: string, institucion: string) => Promise<void>;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -41,6 +41,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         activo: true,
         fechaCreacion: new Date().toISOString(),
         fechaActualizacion: new Date().toISOString(),
+        // Para logins simulados no registrados en el momento, no tienen periodo de prueba activo (son premium)
       };
       
       setUser(mockUser);
@@ -53,13 +54,39 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const register = async (nombre: string, correo: string, _pass: string, institucion: string) => {
+    setLoading(true);
+    try {
+      // Simular registro con fecha de prueba activa
+      const mockUser: User = {
+        id: `usr_${Math.floor(Math.random() * 9000) + 1000}`,
+        nombre,
+        correo,
+        rol: 'administrador',
+        activo: true,
+        fechaCreacion: new Date().toISOString(),
+        fechaActualizacion: new Date().toISOString(),
+        trialStartedAt: new Date().toISOString(), // Inicio de prueba de 7 días
+        institucion,
+      };
+
+      setUser(mockUser);
+      localStorage.setItem('user_session', JSON.stringify(mockUser));
+    } catch (error) {
+      console.error('Error in register', error);
+      throw new Error('Error al registrar la cuenta de administrador');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user_session');
   };
 
   return (
-    <AuthContext value={{ user, isAuthenticated: !!user, loading, login, logout }}>
+    <AuthContext value={{ user, isAuthenticated: !!user, loading, login, register, logout }}>
       {children}
     </AuthContext>
   );
