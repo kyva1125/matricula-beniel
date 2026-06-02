@@ -6,15 +6,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Log {
-  id        String   @id @default(uuid())
-  accion    String
-  detalle   String
-  ipAddress String
-  userAgent String
-  fecha     DateTime @default(now())
-  usuarioId String?
-}
 
 model User {
   id                 String    @id @default(uuid())
