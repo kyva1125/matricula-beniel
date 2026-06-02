@@ -2,7 +2,7 @@ export interface User {
   id: string;
   nombre: string;
   correo: string;
-  rol: 'estudiante' | 'profesor' | 'administrador';
+  rol: 'estudiante' | 'profesor' | 'administrador' | 'apoderado';
   activo: boolean;
   fechaCreacion: string;
   fechaActualizacion: string;

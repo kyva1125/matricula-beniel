@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
 
 const LoginPage: React.FC = () => {
@@ -37,7 +38,7 @@ const LoginPage: React.FC = () => {
             <span className="text-3xl">🎓</span>
           </div>
           <h2 className="text-3xl font-extrabold text-white tracking-tight bg-clip-text bg-gradient-to-r from-white via-slate-100 to-indigo-200">
-            Matrícula Beniel
+            PensiónFlow
           </h2>
           <p className="text-slate-400 text-sm mt-2">
             Ingresa al portal de administración escolar
@@ -117,6 +118,14 @@ const LoginPage: React.FC = () => {
             )}
           </button>
         </form>
+
+        {/* Redirect to registration Link */}
+        <div className="text-center mt-6 text-xs font-semibold text-slate-400">
+          ¿No tienes cuenta?{' '}
+          <Link to="/register" className="text-indigo-400 hover:text-indigo-300 hover:underline transition-colors">
+            Regístrate aquí
+          </Link>
+        </div>
       </div>
 
       {/* Custom styles in head if not supported directly */}

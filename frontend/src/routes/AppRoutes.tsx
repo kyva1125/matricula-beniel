@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from '../features/auth/pages/LoginPage';
+import RegisterPage from '../features/auth/pages/RegisterPage';
 import DashboardPage from '../features/dashboard/pages/DashboardPage';
 import StudentListPage from '../features/students/pages/StudentListPage';
 import RegisterPaymentPage from '../features/payments/pages/RegisterPaymentPage';
@@ -19,6 +20,7 @@ const AppRoutes: React.FC = () => {
       {/* 🚪 Rutas Públicas (Solo para invitados sin sesión) */}
       <Route element={<PublicRoute />}>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
       </Route>
 
       {/* 🚀 Rutas Protegidas (Con sesión activa y usando Layout común) */}

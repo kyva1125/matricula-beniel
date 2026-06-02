@@ -6,13 +6,13 @@ interface AuthContextType {
   isAuthenticated: boolean;
   loading: boolean;
   login: (correo: string, pass: string) => Promise<void>;
+  register: (nombre: string, correo: string, pass: string, rol: 'apoderado' | 'estudiante') => Promise<void>;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -53,15 +53,39 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const register = async (nombre: string, correo: string, _pass: string, rol: 'apoderado' | 'estudiante') => {
+    setLoading(true);
+    try {
+      // Simular registro exitoso en base de datos e inicio automático
+      const newUser: User = {
+        id: `usr_${Math.floor(Math.random() * 9000) + 1000}`,
+        nombre: nombre,
+        correo: correo,
+        rol: rol,
+        activo: true,
+        fechaCreacion: new Date().toISOString(),
+        fechaActualizacion: new Date().toISOString(),
+      };
+
+      setUser(newUser);
+      localStorage.setItem('user_session', JSON.stringify(newUser));
+    } catch (error) {
+      console.error('Error in register', error);
+      throw new Error('No se pudo crear la cuenta');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user_session');
   };
 
   return (
-    <AuthContext value={{ user, isAuthenticated: !!user, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, isAuthenticated: !!user, loading, login, register, logout }}>
       {children}
-    </AuthContext>
+    </AuthContext.Provider>
   );
 };
 
