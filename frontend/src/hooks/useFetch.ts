@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { api } from '../services/api.service';
+import { api } from '@/services/api.service';
 
 interface FetchState<T> {
   data: T | null;
@@ -19,12 +19,13 @@ export function useFetch<T>(endpoint: string) {
     try {
       const result = await api.get<T>(endpoint);
       setState({ data: result, loading: false, error: null });
-    } catch (err: any) {
-      setState({ data: null, loading: false, error: err.message || 'Error desconocido' });
+    } catch (err: unknown) {
+      setState({ data: null, loading: false, error: err instanceof Error ? err.message : 'Error desconocido' });
     }
   }, [endpoint]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchData();
   }, [fetchData]);
 

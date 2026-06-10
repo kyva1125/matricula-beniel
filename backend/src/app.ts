@@ -3,8 +3,9 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import routes from './routes';
-import { errorHandler, AppError } from './middlewares/error.middleware';
-import { env } from './config/environment';
+import { env } from './config/env';
+import { AppError } from './utils/app.error';
+import { errorHandler } from './middlewares/error.middleware';
 
 const app: Application = express();
 
@@ -20,8 +21,8 @@ if (env.isDevelopment) {
 }
 
 // Parsers de peticiones
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 
 // Rutas principales
 app.use('/api', routes);

@@ -6,14 +6,28 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model Business {
+  id            String    @id @default(uuid())
+  nombre        String
+  direccion     String
+  ruc           String?
+  telefono      String?
+  fechaCreacion DateTime  @default(now())
+  users         User[]    @relation("BusinessUsers")
+  students      Student[] @relation("BusinessStudents")
+}
 
 model User {
   id                 String    @id @default(uuid())
+  businessId         String
+  business           Business  @relation("BusinessUsers", fields: [businessId], references: [id], onDelete: Cascade)
   nombre             String
   correo             String    @unique
   password           String
   rol                String    // "administrador" | "apoderado" | "estudiante"
   activo             Boolean   @default(true)
+  trialStartedAt     DateTime? // Para simulación de período de prueba de 7 días
+  institucion        String?   // Nombre de la institución/colegio
   fechaCreacion      DateTime  @default(now())
   fechaActualizacion DateTime  @updatedAt
   alumnos            Student[] @relation("ApoderadoAlumnos")
@@ -22,6 +36,8 @@ model User {
 
 model Student {
   id                 String    @id @default(uuid())
+  businessId         String
+  business           Business  @relation("BusinessStudents", fields: [businessId], references: [id], onDelete: Cascade)
   nombres            String
   apellidos          String
   dni                String    @unique
@@ -60,3 +76,4 @@ model Payment {
   registradoPor      User      @relation("AdminRegistros", fields: [registradoPorId], references: [id])
   fechaCreacion      DateTime  @default(now())
 }
+

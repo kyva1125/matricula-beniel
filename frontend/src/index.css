@@ -1,1 +1,130 @@
 @import "tailwindcss";
+
+@theme {
+  --animate-fade-in: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-bounce-slow: bounceSlow 3s infinite;
+  --animate-head-shake: headShake 0.6s ease-in-out;
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes bounceSlow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  @keyframes headShake {
+    0% { transform: translateX(0); }
+    6.5% { transform: translateX(-6px) rotateY(-9deg); }
+    18.5% { transform: translateX(5px) rotateY(7deg); }
+    31.5% { transform: translateX(-3px) rotateY(-5deg); }
+    43.5% { transform: translateX(2px) rotateY(3deg); }
+    50% { transform: translateX(0); }
+  }
+}
+
+.victor-display-large {
+    font-family: "Victor Mono", monospace;
+    font-size: 57px;
+    font-weight: 700;
+    line-height: 64px;
+}
+
+.victor-display-medium {
+    font-family: "Victor Mono", monospace;
+    font-size: 45px;
+    font-weight: 700;
+    line-height: 52px;
+}
+
+.victor-display-small {
+    font-family: "Victor Mono", monospace;
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 44px;
+}
+
+.victor-headline-large {
+    font-family: "Victor Mono", monospace;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 40px;
+}
+
+.victor-headline-medium {
+    font-family: "Victor Mono", monospace;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 36px;
+}
+
+.victor-headline-small {
+    font-family: "Victor Mono", monospace;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 32px;
+}
+
+.victor-title-large {
+    font-family: "Victor Mono", monospace;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 28px;
+}
+
+.victor-title-medium {
+    font-family: "Victor Mono", monospace;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+}
+
+.victor-title-small {
+    font-family: "Victor Mono", monospace;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+}
+
+.victor-body-large {
+    font-family: "Victor Mono", monospace;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.victor-body-medium {
+    font-family: "Victor Mono", monospace;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.victor-body-small {
+    font-family: "Victor Mono", monospace;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+}
+
+.victor-label-large {
+    font-family: "Victor Mono", monospace;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+}
+
+.victor-label-medium {
+    font-family: "Victor Mono", monospace;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+}
+
+.victor-label-small {
+    font-family: "Victor Mono", monospace;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 16px;
+}
+

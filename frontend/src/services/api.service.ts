@@ -23,7 +23,7 @@ class ApiService {
       }
 
       return data as T;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(`💥 [API Error] en ${endpoint}:`, error);
       throw error;
     }
@@ -33,7 +33,7 @@ class ApiService {
     return this.request<T>(endpoint, { ...options, method: 'GET' });
   }
 
-  post<T>(endpoint: string, body: any, options?: RequestInit): Promise<T> {
+  post<T>(endpoint: string, body: unknown, options?: RequestInit): Promise<T> {
     return this.request<T>(endpoint, {
       ...options,
       method: 'POST',
@@ -41,7 +41,7 @@ class ApiService {
     });
   }
 
-  put<T>(endpoint: string, body: any, options?: RequestInit): Promise<T> {
+  put<T>(endpoint: string, body: unknown, options?: RequestInit): Promise<T> {
     return this.request<T>(endpoint, {
       ...options,
       method: 'PUT',

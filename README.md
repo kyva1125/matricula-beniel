@@ -15,27 +15,51 @@ Estructura base moderna, robusta y escalable para una aplicación de Node.js con
 
 ## 📂 Estructura de Directorios
 
-El proyecto está diseñado de forma modular para escalar limpiamente conforme crezca la lógica de negocio:
+El proyecto está diseñado de forma limpia y por capas (MVC/Repository Pattern) para separar responsabilidades y facilitar el mantenimiento:
 
 ```text
 matricula-beniel/
-├── src/
-│   ├── server.ts               # Punto de entrada y arranque del servidor HTTP
-│   ├── app.ts                  # Inicialización de Express, CORS, Helmet y middlewares globales
-│   ├── config/
-│   │   └── environment.ts      # Tipado estricto y carga segura de variables de entorno (.env)
-│   ├── controllers/
-│   │   └── health.controller.ts# Lógica de respuestas HTTP (e.g. estado del backend)
-│   ├── routes/
-│   │   ├── index.ts            # Enrutador maestro unificador (bajo /api)
-│   │   └── health.routes.ts    # Enrutamiento de sub-módulo de estado
-│   └── middlewares/
-│       └── error.middleware.ts # Controlador de excepciones y respuestas de error JSON uniformes
-├── dist/                       # Código de producción compilado (generado tras build)
-├── .env                        # Variables locales de entorno (puertos, claves)
-├── .env.example                # Plantilla de configuración de entorno para colaboradores
-├── tsconfig.json               # Configuración estricta del compilador TypeScript
-└── package.json                # Dependencias, tipados y scripts útiles
+├── backend/
+│   ├── src/
+│   │   ├── server.ts               # Punto de entrada y arranque del servidor HTTP
+│   │   ├── app.ts                  # Inicialización de Express, CORS, Helmet y middlewares globales
+│   │   ├── config/
+│   │   │   ├── env.ts              # Carga segura y tipado de variables de entorno (.env)
+│   │   │   ├── prisma.ts         # Conexión del pool de PostgreSQL usando Prisma Client
+│   │   │   └── logger.ts           # Logger de consola unificado
+│   │   ├── controllers/            # Controladores que reciben peticiones y delegan lógica a servicios
+│   │   │   ├── auth.controller.ts
+│   │   │   ├── health.controller.ts
+│   │   │   └── user.controller.ts
+│   │   ├── routes/                 # Rutas de la API agrupadas por entidad (bajo /api)
+│   │   │   ├── index.ts            # Enrutador maestro unificador
+│   │   │   ├── auth.routes.ts
+│   │   │   ├── health.routes.ts
+│   │   │   └── user.routes.ts
+│   │   ├── services/               # Lógica de negocio (procesamiento de datos, lógica de dominio)
+│   │   │   ├── auth.service.ts
+│   │   │   └── user.service.ts
+│   │   ├── repositories/           # Capa de datos que interactúa con la base de datos a través de Prisma
+│   │   │   ├── auth.repository.ts
+│   │   │   └── user.repository.ts
+│   │   ├── models/                 # Modelos o entidades de dominio
+│   │   │   ├── payment.model.ts
+│   │   │   ├── pension.model.ts
+│   │   │   ├── student.model.ts
+│   │   │   └── user.model.ts
+│   │   ├── middlewares/            # Filtros e interceptores HTTP (autenticación, errores globales)
+│   │   │   ├── auth.middleware.ts
+│   │   │   └── error.middleware.ts
+│   │   ├── validators/             # Validador de esquemas de datos entrantes (Request Body)
+│   │   │   └── user.validator.ts
+│   │   └── utils/                  # Clases de error común y formateo de respuestas
+│   │       ├── app.error.ts
+│   │       └── response.ts
+│   ├── prisma/                     # Esquema y archivos de migración de Prisma ORM
+│   ├── .env                        # Variables locales de entorno (puertos, conexión DB)
+│   ├── tsconfig.json               # Configuración estricta del compilador TypeScript
+│   └── package.json                # Dependencias, scripts y metadatos del backend
+└── frontend/                       # Proyecto Frontend (React, Vite, Tailwind CSS)
 ```
 
 ---

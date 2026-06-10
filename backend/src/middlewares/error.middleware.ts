@@ -1,37 +1,26 @@
 import { Request, Response, NextFunction } from 'express';
-import { env } from '../config/environment';
+import { env } from '../config/env';
+import { AppError } from '../utils/app.error';
 
-export class AppError extends Error {
-  public readonly statusCode: number;
-  public readonly status: string;
-  public readonly isOperational: boolean;
-
-  constructor(message: string, statusCode: number) {
-    super(message);
-    this.statusCode = statusCode;
-    this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error';
-    this.isOperational = true;
-
-    Error.captureStackTrace(this, this.constructor);
-  }
-}
-
+// Middleware de error controla el error tiene 4 parametros
 export const errorHandler = (
-  err: any,
+  error: Error,
   req: Request,
   res: Response,
   next: NextFunction
-): void => {
-  const statusCode = err.statusCode || 500;
-  const status = err.status || 'error';
-
-  if (env.isDevelopment || statusCode === 500) {
-    console.error('💥 ERROR INTERNO:', err);
+) => {
+  if (error instanceof AppError) {
+    return res.status(error.statusCode).json({
+      success: false,
+      message: error.message,
+    });
   }
 
-  res.status(statusCode).json({
-    status,
-    message: err.message || 'Algo salió mal en el servidor.',
-    ...(env.isDevelopment && { stack: err.stack }),
+  console.error('💥 Error inesperado:', error);
+
+  return res.status(500).json({
+    success: false,
+    message: 'Error interno del servidor',
+    stack: env.isDevelopment ? error.stack : undefined,
   });
 };
